@@ -1,5 +1,3 @@
-
-
 class PixelMap {
     constructor(lines) {
         this.pixels = [];
@@ -23,6 +21,9 @@ class PixelMap {
                 else if(section == 'colors') 
                 {
                     i = this.process_colors(i+1);
+                }
+                else if(section == 'pixel_scale') {
+                    i = this.process_pixel_scale(i+1);
                 }
             }
         }
@@ -64,6 +65,22 @@ class PixelMap {
             {
                 let color_tag = this.lines[i].replace(',','').split(' ');
                 this.colors[color_tag[0]] = color_tag.slice(1,color_tag.length).map(x => parseInt(x));
+            }
+        }
+        return this.lines.length-1;
+    }
+    
+    process_pixel_scale(line_start) 
+    {
+        for(let i = line_start; i < this.lines.length; i++) 
+        {
+            if(this.lines[i].startsWith(':')) 
+            {
+                return i - 1;
+            }
+            else
+            {
+                this.pixel_scale = parseInt(this.lines[i].trim());
             }
         }
         return this.lines.length-1;
